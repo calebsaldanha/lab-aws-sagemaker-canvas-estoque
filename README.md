@@ -1,47 +1,31 @@
-# 📊 Previsão de Estoque Inteligente na AWS com [SageMaker Canvas](https://aws.amazon.com/pt/sagemaker/canvas/)
+# Previsão inteligente de estoque 
 
-Bem-vindo ao desafio de projeto "Previsão de Estoque Inteligente na AWS com SageMaker Canvas. Neste Lab DIO, você aprenderá a usar o SageMaker Canvas para criar previsões de estoque baseadas em Machine Learning (ML). Siga os passos abaixo para completar o desafio!
+## Introdução
 
-## 📋 Pré-requisitos
+Neste projeto, desenvolvi um modelo de aprendizado de máquina para previsão de estoque usando Amazon Sagemaker Canvas. O objetivo é criar um sistema inteligente que utilize dados históricos para prever os volumes de vendas necessários para auxiliar no gerenciamento de estoque e na tomada de decisões. A seguir explicarei passo a passo o processo, detalhando o processo, as premissas envolvidas, as decisões envolvidas e a análise dos resultados esperados.
 
-Antes de começar, certifique-se de ter uma conta na AWS. Se precisar de ajuda para criar sua conta, confira nosso repositório [AWS Cloud Quickstart](https://github.com/digitalinnovationone/aws-cloud-quickstart).
+## Passo a passo ###
 
+ O primeiro passo neste projeto é selecionar um conjunto de dados apropriado. Fui até a pasta “Datasets” do repositório e lá vi diversas opções de processamento de dados. Depois de revisar os dados disponíveis, selecionei um conjunto de dados que continha informações do produto, incluindo preço, critérios de suporte e quantidades do produto. SelecioneI o dataset/dataset-1000-com-preco-promocional-e-renovacao-estoque.csv. Após selecionar o conjunto de dados, carreguei-o no SageMaker Canvas, uma ferramenta para criação, treinamento e implantação de plataforma de modelo de aprendizado de máquina.
+Importei o conjunto de dados selecionado para o SageMaker Canvas. Configurei as variáveis ​​de entrada e saída e a coluna que desejo reportar é "STOCK_QUANTITY". O modelo foi projetado para realizar previsões sistemáticas, o que inclui a previsão de padrões futuros com base em dados passados. Comecei a treinar como modelo. Nesse caso, quando eu estava trabalhando na amostra, o tempo foi curto. O modelo usa dados passados ​​para prever os níveis futuros de estoque.
 
-## 🎯 Objetivos Deste Desafio de Projeto (Lab)
+Avaliei os parâmetros de desempenho do modelo. Isto é fundamental para compreender a eficácia do modelo e se ele está fazendo previsões precisas. As principais coisas que verifico são: 
 
-![image](https://github.com/digitalinnovationone/lab-aws-sagemaker-canvas-estoque/assets/730492/72f5c21f-5562-491e-aa42-2885a3184650)
+** Avg. wQL**: 0,457 
+**MAPE** (erro percentual médio absoluto): 0,331
+**WAPE** (erro percentual absoluto): 0,715
+**RMSE** (erro quadrático médio): 24,160
+* *MASE **(Erro Médio Absoluto): 0,000
+* 
+Esses parâmetros mostram a precisão da previsão e ajudam a identificar áreas de melhoria. Durante a análise, constatei que a coluna “FLAG_PROMOOCAO” teve um impacto negativo na previsão, apresentando uma precisão de -100%. Isso me faz pensar em fazer alterações no modelo, como remover ou modificar essa variável.
+Extraí os resultados e analisei as previsões feitas. Este processo envolve observar o desempenho das quantidades esperadas em relação às expectativas e identificar quaisquer padrões ou insights que possam ser úteis no gerenciamento de estoque.
 
-- Dê um fork neste projeto e reescreva este `README.md`. Sinta-se à vontade para detalhar todo o processo de criação do seu Modelo de ML para uma "Previsão de Estoque Inteligente".
-- Para isso, siga o [passo a passo] descrito a seguir e evolua as suas habilidades em ML no-code com o Amazon SageMaker Canvas.
-- Ao concluir, envie a URL do seu repositório com a solução na plataforma da DIO.
+###Análise Preditiva####
 
+A análise de dados fornece previsões de estoque de vários produtos para o dia seguinte (09/02/2024). Cada produto possui três percentuais (p10, p50, p90) e uma previsão.
+####Porcentagem de descrição - **p10**: Este valor representa a previsão de segurança, indicando a quantidade de produtos que podem passar em 90% dos casos. É importante entender o contexto dessa pequena expectativa.
+**p50***: Este valor representa uma previsão de estoque, indicando um cenário mais ideal.
+**p90***: Este valor representa uma previsão brilhante indicando que as dimensões do produto podem ser excedidas em apenas 10% dos casos.
 
-## 🚀 Passo a Passo
-
-### 1. Selecionar Dataset
-
--   Navegue até a pasta `datasets` deste repositório. Esta pasta contém os datasets que você poderá escolher para treinar e testar seu modelo de ML. Sinta-se à vontade para gerar/enriquecer seus próprios datasets, quanto mais você se engajar, mais relevante esse projeto será em seu portfólio.
--   Escolha o dataset que você usará para treinar seu modelo de previsão de estoque.
--   Faça o upload do dataset no SageMaker Canvas.
-
-### 2. Construir/Treinar
-
--   No SageMaker Canvas, importe o dataset que você selecionou.
--   Configure as variáveis de entrada e saída de acordo com os dados.
--   Inicie o treinamento do modelo. Isso pode levar algum tempo, dependendo do tamanho do dataset.
-
-### 3. Analisar
-
--   Após o treinamento, examine as métricas de performance do modelo.
--   Verifique as principais características que influenciam as previsões.
--   Faça ajustes no modelo se necessário e re-treine até obter um desempenho satisfatório.
-
-### 4. Prever
-
--   Use o modelo treinado para fazer previsões de estoque.
--   Exporte os resultados e analise as previsões geradas.
--   Documente suas conclusões e qualquer insight obtido a partir das previsões.
-
-## 🤔 Dúvidas?
-
-Esperamos que esta experiência tenha sido enriquecedora e que você tenha aprendido mais sobre Machine Learning aplicado a problemas reais. Se tiver alguma dúvida, não hesite em abrir uma issue neste repositório ou entrar em contato com a equipe da DIO.
+#### Insight Data - Por exemplo, a previsão média ("média") para produto com "Product_ID" 1005 é de 40,90 minutos. Na melhor das hipóteses (`p10`) o produto pode ser reduzido em até 4 unidades e na melhor das hipóteses (`p90`) o produto pode chegar a 79 unidades - a diferença entre as porcentagens mostra a Incerteza do 'mundo real'. política. Produtos com diferenças maiores entre “p10” e “p90” indicam maiores mudanças na demanda esperada, enquanto produtos com diferenças percentuais menores indicam previsões estáveis.
+#### PRODUTOS ESPECIAIS - **PRODUTO 1003**: A previsão é de 6,46 minutos, possivelmente subindo para -10,08 no pior cenário (`p10`) e acima (indicando seu possível enfraquecimento). 29.19 Melhor da Mostra (`p90`). - **Produto 1004***: Mostra previsões para 10,50 unidades, variando de -11,57 (`p10`) a 36,93 (`p90`). - **1000 Ações***: A previsão é de 2,20 unidades, com intervalo de -16,15 (`p10`) a 24,61 (`p90`).
